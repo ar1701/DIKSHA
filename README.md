@@ -1,7 +1,9 @@
+**Diksha** is an innovative platform designed to empower underprivileged students by providing access to high-quality education and personalized learning experiences. Our mission is to bridge the educational gap and offer students a chance to explore, learn, and grow, regardless of their socio-economic background.
+
+![Logo]()
+
 
 ## **Project Overview**
-
-
 
 ### **Empowering Underprivileged Learners for a Bright Future**  
 Our mission is to **redefine education for underprivileged students** who are often left behind due to the lack of access to quality learning resources, skills development, and career guidance. This platform is designed to **empower every student** to unlock their true potential, enabling them to compete in today’s fast-paced, technology-driven society.
