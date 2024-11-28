@@ -22,39 +22,38 @@
         <div id="result"></div>
     </div>
 
-    <script >
+    <script>
         document.getElementById('uploadBtn').addEventListener('click', async () => {
-    const imageInput = document.getElementById('imageInput');
-    const file = imageInput.files[0];
+            const imageInput = document.getElementById('imageInput');
+            const file = imageInput.files[0];
 
-    if (!file) {
-        alert('Please select an image file.');
-        return;
-    }
+            if (!file) {
+                alert('Please select an image file.');
+                return;
+            }
 
-    const formData = new FormData();
-    formData.append('image', file);
+            const formData = new FormData();
+            formData.append('image', file);
 
-    try {
-        const loading = document.getElementById('loading');
-        const resultDiv = document.getElementById('result');
-        loading.style.display = 'flex';
+            try {
+                const loading = document.getElementById('loading');
+                const resultDiv = document.getElementById('result');
+                loading.style.display = 'flex';
 
-        const response = await fetch('/form', {
-            method: 'POST',
-            body: formData
+                const response = await fetch('/form', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+                resultDiv.innerText = data.result;
+                resultDiv.style.display = 'block';
+            } catch (error) {
+                console.error('Error:', error);
+            } finally {
+                loading.style.display = 'none';
+            }
         });
-
-        const data = await response.json();
-        resultDiv.innerText = data.result;
-        resultDiv.style.display = 'block';
-    } catch (error) {
-        console.error('Error:', error);
-    } finally {
-        loading.style.display = 'none';
-    }
-});
-
     </script>
 </body>
 </html>

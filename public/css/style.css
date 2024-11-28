@@ -21,7 +21,6 @@
     z-index: 99;
 }
 
-
 /*** Spinner ***/
 #spinner {
     opacity: 0;
@@ -95,6 +94,16 @@
 /* img{
     filter: sepia(100%) saturate(300%) brightness(70%) hue-rotate(30deg) ;
 } */
+#cat{
+    scale: 0.9;  
+    height: 200px;
+}
+
+
+#cat:hover{
+    scale: 0.9;  
+}
+
 div.owl-carousel-item.position-relative>img{
     filter: sepia(100%) saturate(300%) hue-rotate(30deg) brightness(100%) !important;
 }

@@ -40,11 +40,12 @@ if __name__ == "__main__":
     chat_models = [
         "phi-3-gguf",
         "llama-2-7b-chat-gguf",
+        "llama-2-13b-chat-ov",
         "llama-3-instruct-bartowski-gguf",
         "openhermes-mistral-7b-gguf",
         "zephyr-7b-gguf",
         "tiny-llama-chat-gguf"
     ]
 
-    model_name = chat_models[1]
+    model_name = chat_models[2]
     simple_chat_terminal(model_name)

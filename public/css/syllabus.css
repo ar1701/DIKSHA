@@ -1,22 +1,33 @@
 :root {
-    --primary: #06BBCC;
-    --light: #F0FBFC;
-    --dark: #181d38;
+    --primary: #32a852; /* Green */
+    --secondary: #f9a825; /* Light Orange */
+    --light: #fffaf0; /* Very Light Orange */
+    --dark: #2c2c2c; /* Darker shade for text */
+}
+
+body {
+    background: var(--light);
+    font-family: Arial, sans-serif;
+    color: var(--dark);
+    margin: 0;
+    padding: 0;
 }
 
 .container {
     max-width: 600px;
-    margin: 0 auto;
+    margin: 30px auto;
     padding: 20px;
     background: var(--light);
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--secondary);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 h1 {
-    color: var(--dark);
+    color: var(--primary);
     text-align: center;
     margin-bottom: 20px;
+    font-size: 24px;
 }
 
 form {
@@ -26,16 +37,24 @@ form {
 label {
     display: block;
     margin-bottom: 5px;
+    font-weight: bold;
+    color: var(--dark);
 }
 
 select, input[type="text"] {
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
-    border: 1px solid #ccc;
+    border: 2px solid var(--secondary);
     border-radius: 5px;
     box-sizing: border-box;
     font-size: 16px;
+}
+
+select:focus, input[type="text"]:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 5px var(--primary);
 }
 
 button[type="submit"] {
@@ -50,28 +69,33 @@ button[type="submit"] {
 }
 
 button[type="submit"]:hover {
-    background: #0497cc;
+    background: #258b41; /* Darker Green */
 }
-
-/* Existing CSS remains unchanged */
 
 .result {
     margin-top: 30px;
 }
 
 .result h2 {
-    color: var(--dark);
+    color: var(--primary);
     margin-bottom: 10px;
     text-align: center;
+    font-size: 20px;
 }
 
 textarea {
     width: 100%;
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 2px solid var(--secondary);
     border-radius: 5px;
     box-sizing: border-box;
     font-size: 16px;
     resize: vertical;
+    background: #fff;
 }
 
+textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 5px var(--primary);
+}
