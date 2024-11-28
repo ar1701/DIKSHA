@@ -10,10 +10,10 @@ from llmware.setup import Setup
 def prompt_with_sources (model_name):
 
     #   pulls down the sample files, including a specific agreement file
-    sample_files_path = Setup().load_sample_files(over_write=False)
-    fp = os.path.join(sample_files_path, "Agreements")
+    
+    fp = os.path.join("./", "")
 
-    local_file = "Apollo EXECUTIVE EMPLOYMENT AGREEMENT.pdf"
+    local_file = "test.txt"
 
     prompter = Prompt().load_model(model_name)
 
@@ -22,9 +22,9 @@ def prompt_with_sources (model_name):
     #       2.  apply an optional query filter to reduce the text chunks to only those matching the query
     #       3.  batch according to the model context window, and make available for any future inferences
 
-    sources = prompter.add_source_document(fp, local_file, query="base salary")
+    sources = prompter.add_source_document(fp, local_file)
 
-    prompt = "What is the base salary amount?"
+    prompt = "What is the real name of ayush?"
     prompt_instruction = "default_with_context"
     response = prompter.prompt_with_source(prompt=prompt, prompt_name=prompt_instruction)
 
@@ -40,9 +40,9 @@ def prompt_with_sources (model_name):
 
 if __name__ == "__main__":
 
-    model_name = "llmware/bling-1b-0.1"
+    #model_name = "llmware/bling-1b-0.1"
 
     print(f"\nExample - intro to prompt_with_sources - adding a document source to a prompt\n")
 
-    prompt_with_sources (model_name)
+    prompt_with_sources ("phi-3-gguf")
 
