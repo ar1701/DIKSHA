@@ -59,5 +59,5 @@ if __name__ == "__main__":
         "tiny-llama-chat-gguf"
     ]
 
-    model_name = chat_models[1]
+    model_name = chat_models[0]
     simple_chat_terminal(model_name)
