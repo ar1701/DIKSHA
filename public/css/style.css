@@ -1,8 +1,8 @@
 /********** Template CSS **********/
 :root {
-    --primary: #06BBCC;
-    --light: #F0FBFC;
-    --dark: #181d38;
+    --primary: #FFBE00;
+    --light: #FFF5CC;
+    --dark: #8B7355;
 }
 
 .fw-medium {
@@ -39,9 +39,14 @@
 
 /*** Button ***/
 .btn {
-    font-family: 'Nunito', sans-serif;
-    font-weight: 600;
-    transition: .5s;
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: #FFFFFF;
+}
+
+.btn:hover {
+    background-color: #E6AC00; /* Slightly darker shade for hover state */
+    border-color: #E6AC00;
 }
 
 .btn.btn-primary,
@@ -254,12 +259,10 @@
 
 /*** Service ***/
 .service-item {
-    background: var(--light);
-    transition: .5s;
+    background: rgba(255, 190, 0, 0.1);
 }
 
 .service-item:hover {
-    margin-top: -10px;
     background: var(--primary);
 }
 
@@ -274,8 +277,9 @@
 
 /*** Categories & Courses ***/
 .category img,
-.course-item img {
-    transition: .5s;
+.course-item img,
+.owl-carousel-item img {
+    filter: sepia(20%) hue-rotate(340deg) saturate(200%);
 }
 
 .category a:hover img,
@@ -293,6 +297,17 @@
     transform: scale(1.1);
 }
 
+.btn.btn-primary,
+.nav-item:hover,
+.service-item:hover {
+    box-shadow: 0 0 15px rgba(255, 190, 0, 0.5);
+    transition: box-shadow 0.3s ease;
+}
+
+.testimonial-item img,
+.category img {
+    border: 3px solid var(--primary);
+}
 
 /*** Testimonial ***/
 .testimonial-carousel::before {
@@ -331,6 +346,11 @@
     }
 }
 
+.owl-carousel-item .position-absolute {
+    background: rgba(255, 190, 0, 0.5) !important;
+}
+
+
 .testimonial-carousel .owl-item .testimonial-text,
 .testimonial-carousel .owl-item.center .testimonial-text * {
     transition: .5s;
@@ -366,6 +386,10 @@
     border-color: var(--primary);
 }
 
+.footer .row.g-2 img {
+    background-color: var(--primary) !important;
+    padding: 5px !important;
+}
 
 /*** Footer ***/
 .footer .btn.btn-social {
@@ -380,6 +404,30 @@
     border: 1px solid #FFFFFF;
     border-radius: 35px;
     transition: .3s;
+}
+
+.navbar .btn,
+.footer .btn-social,
+.footer .btn-outline-light {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: #FFFFFF;
+}
+
+.footer .btn-social:hover,
+.navbar .btn:hover {
+    background-color: #E6AC00;
+    border-color: #E6AC00;
+}
+
+/* Additional global color application */
+.text-primary {
+    color: var(--primary) !important;
+}
+
+/* Optional: Add golden tint to sections */
+.container-xxl {
+    background-color: rgba(255, 190, 0, 0.05);
 }
 
 .footer .btn.btn-social:hover {
