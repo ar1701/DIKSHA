@@ -13,7 +13,7 @@
   "author": "Ayush",
   "license": "ISC",
   "dependencies": {
-    "@google/generative-ai": "^0.7.1",
+    "@google/generative-ai": "^0.21.0",
     "airbnb": "file:",
     "axios": "^1.6.8",
     "cloudinary": "^1.41.3",
