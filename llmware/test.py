@@ -1,4 +1,5 @@
 from llmware.models import ModelCatalog
+from llmware.prompts import Prompt
 from llmware.gguf_configs import GGUFConfigs
 
 # Configure the GGUF models
@@ -11,12 +12,11 @@ def simple_chat_terminal(model_name):
 
     try:
         # Load the model with explicit path
-        model = ModelCatalog().load_model(
+        model = Prompt().load_model(
             model_name,
-            temperature=0.3,
-            sample=True,
-            max_output=450,
-            model_path="llmware"  # Specify local model path
+            temperature=0.0,
+            sample=False,
+            max_output=450,  # Specify local model path
         )
     except Exception as e:
         print(f"Error loading model: {e}")
@@ -30,19 +30,19 @@ def simple_chat_terminal(model_name):
                 print("Chat ended. Goodbye!")
                 break
 
-            chat_history.append({"role": "user", "content": prompt})
+            # chat_history.append({"role": "user", "content": prompt})
             print("Assistant: ", end="", flush=True)
 
-            response_generator = model.stream(prompt)
-            bot_response = ""
-            for chunk in response_generator:
-                if chunk == "<|end|>" or chunk == "<|assistant|>":
-                    break
-                print(chunk, end="", flush=True)
-                bot_response += chunk
-            print("\n")
+            response_generator = model.prompt_main(prompt)['llm_response']
 
-            chat_history.append({"role": "assistant", "content": bot_response})
+            # response_generator = response_generator.split(
+            #    "<|im_end|>", 1)[1].split("<|assistant|>", 1)[0]
+
+            print(response_generator, end="")
+
+            print("\n")
+            prompt = ""
+            # chat_history.append({"role": "assistant", "content": bot_response})
 
         except Exception as e:
             print(f"\nAn error occurred: {e}")
@@ -59,5 +59,5 @@ if __name__ == "__main__":
         "tiny-llama-chat-gguf"
     ]
 
-    model_name = chat_models[0]
+    model_name = chat_models[1]
     simple_chat_terminal(model_name)
