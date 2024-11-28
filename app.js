@@ -338,3 +338,4 @@ async function syllabusGen(std, sub) {
   const text = response.text();
   return text;
 }
+
