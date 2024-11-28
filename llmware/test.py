@@ -7,38 +7,47 @@ GGUFConfigs().set_config("max_output_tokens", 500)
 def simple_chat_terminal(model_name):
     print(f"Simple Chat with {model_name}\n")
     print("Type 'exit' to end the chat.\n")
+    
+    try:
+        # Load the model with explicit path
+        model = ModelCatalog().load_model(
+            model_name, 
+            temperature=0.3, 
+            sample=True, 
+            max_output=450,
+            model_path="llmware"  # Specify local model path
+        )
+    except Exception as e:
+        print(f"Error loading model: {e}")
+        return
 
-    # Load the model
-    model = ModelCatalog().load_model(model_name, temperature=0.3, sample=True, max_output=450)
-
-    # Initialize chat history
     chat_history = []
-
     while True:
-        # User input
-        prompt = input("You: ")
-        if prompt.lower() == "exit":
-            print("Chat ended. Goodbye!")
+        try:
+            prompt = input("You: ")
+            if prompt.lower() == "exit":
+                print("Chat ended. Goodbye!")
+                break
+
+            chat_history.append({"role": "user", "content": prompt})
+            print("Assistant: ", end="", flush=True)
+            
+            response_generator = model.stream(prompt)
+            bot_response = ""
+            for chunk in response_generator:
+                if chunk == "<|end|>" or chunk == "<|assistant|>":
+                    break
+                print(chunk, end="", flush=True)
+                bot_response += chunk
+            print("\n")
+            
+            chat_history.append({"role": "assistant", "content": bot_response})
+            
+        except Exception as e:
+            print(f"\nAn error occurred: {e}")
             break
 
-        # Display user's input
-        chat_history.append({"role": "user", "content": prompt})
-
-        # Generate and display the assistant's response
-        print("Assistant: ", end="", flush=True)
-        response_generator = model.stream(prompt)  # Stream the bot's response
-        bot_response = ""
-
-        for chunk in response_generator:
-            print(chunk, end="", flush=True)  # Real-time response
-            bot_response += chunk
-
-        print("\n")  # Add a newline for better readability
-
-        chat_history.append({"role": "assistant", "content": bot_response})
-
 if __name__ == "__main__":
-    # List of chat models available
     chat_models = [
         "phi-3-gguf",
         "llama-2-7b-chat-gguf",
@@ -47,9 +56,6 @@ if __name__ == "__main__":
         "zephyr-7b-gguf",
         "tiny-llama-chat-gguf"
     ]
-
-    # Select the first model as default (can be changed to another)
-    model_name = chat_models[0]
-
-    # Run the terminal chat application
+    
+    model_name = chat_models[1]
     simple_chat_terminal(model_name)
