@@ -1,1 +1,2 @@
-# CodeCrew_Novathon
+# Inspi-Ore
+## Transforming Potential into Brilliance
