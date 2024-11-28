@@ -1,62 +1,210 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grading System</title>
-    <link rel="stylesheet" href="/css/grading.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <title>Student Report Card</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 150vh;
+            margin: 0;
+            background-color: #c9b3ed;
+            font-family: Arial, sans-serif;
+        }
+        table {
+    border-collapse: collapse;
+    margin: 20px 0;
+    width: 90%;
+    background-color: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+    background-color: #f9f9f9; /* Subtle background color for columns */
+}
+
+th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+td {
+    background-color: white; /* Ensures consistent cell coloring */
+}
+
+tr:nth-child(even) td {
+    background-color: #f9f9f9; /* Alternating row background for better readability */
+}
+
+tr:hover td {
+    background-color: #FFBE00; /* Highlight row on hover */
+    color: white; /* Change text color for better contrast */
+}
+
+caption {
+    margin-bottom: 10px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+input[type="text"] {
+    width: 85%;
+    padding: 5px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+input[type="submit"] {
+    background-color: #FFBE00;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease-in-out;
+}
+
+input[type="submit"]:hover {
+    background-color: #FFA500;
+    transform: scale(1.05);
+}
+
+        
+       
+    </style>
 </head>
-
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>Grading System</h1>
-        </div>
-        <div class="input-container">
-            <div class="input-field">
-                <label for="eng">English</label>
-                <input type="text" id="eng">
-            </div>
-            <div class="input-field">
-                <label for="mat">Math's</label>
-                <input type="text" id="mat">
-            </div>
-            <div class="input-field">
-                <label for="phy">Physics</label>
-                <input type="text" id="phy">
-            </div>
-            <div class="input-field">
-                <label for="urd">Computer</label>
-                <input type="text" id="urd">
-            </div>
-            <div class="input-field">
-                <label for="sci">Science</label>
-                <input type="text" id="sci">
-            </div>
-        </div>
-        <div class="button-container">
-            <button class="btn" onclick="total()">Total</button>
-            <button class="btn" onclick="Average()">Average</button>
-            <button class="btn" onclick="grade()">Grade</button>
-        </div>
-        <div id="result" class="result-container">
-            <div class="result">
-                <div class="result-heading">Total</div>
-                <div id="total" class="result-content"></div>
-            </div>
-            <div class="result">
-                <div class="result-heading">Average</div>
-                <div id="ave" class="result-content"></div>
-            </div>
-            <div class="result">
-                <div class="result-heading">Remarks</div>
-                <div id="grade" class="result-content"></div>
-            </div>
-        </div>
-    </div>
-    <script src="/js/grading.js"></script>
-</body>
+    <h1 >Student Report Card</h1>
+    <table>
+        <caption>Enter Student Details</caption>
+        <tr>
+            <th colspan="2">Student Name:</th>
+            <td colspan="2"><input type="text" id="studentName" placeholder="Enter Student Name"></td>
+        </tr>
+        <tr>
+            <th>Subject</th>
+            <th>Marks</th>
+            <th>Credits</th>
+            <th>Letter Grade</th>
+        </tr>
+        <tr>
+            <td>English</td>
+            <td><input type="text" id="englishMarks" placeholder="Marks"></td>
+            <td><input type="text" id="englishCredits" placeholder="Credits"></td>
+            <td><input type="text" id="englishLetter" placeholder="Grade"></td>
+        </tr>
+        <tr>
+            <td>Physics</td>
+            <td><input type="text" id="physicsMarks" placeholder="Marks"></td>
+            <td><input type="text" id="physicsCredits" placeholder="Credits"></td>
+            <td><input type="text" id="physicsLetter" placeholder="Grade"></td>
+        </tr>
+        <tr>
+            <td>Chemistry</td>
+            <td><input type="text" id="chemistryMarks" placeholder="Marks"></td>
+            <td><input type="text" id="chemistryCredits" placeholder="Credits"></td>
+            <td><input type="text" id="chemistryLetter" placeholder="Grade"></td>
+        </tr>
+        <tr>
+            <td>Maths</td>
+            <td><input type="text" id="mathsMarks" placeholder="Marks"></td>
+            <td><input type="text" id="mathsCredits" placeholder="Credits"></td>
+            <td><input type="text" id="mathsLetter" placeholder="Grade"></td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <input type="submit" value="Calculate" onclick="calculateScore()">
+            </td>
+        </tr>
+    </table>
 
+    <table id="SubjectDetails">
+        <caption>Individual Subject Details</caption>
+        <tr>
+            <th>Subject</th>
+            <th>Marks</th>
+            <th>Status</th>
+        </tr>
+        <tbody id="subjectDetailsBody"></tbody>
+    </table>
+
+    <table id="TableScore">
+        <caption>Final Result</caption>
+        <tr>
+            <th>Name</th>
+            <th>Total Marks</th>
+            <th>Average Marks</th>
+            <th>Overall Remarks</th>
+        </tr>
+        <tbody id="finalResultBody"></tbody>
+    </table>
+
+    <script>
+        function calculateScore() {
+            const name = document.getElementById("studentName").value.trim();
+            if (!name) {
+                alert("Please enter the student's name.");
+                return;
+            }
+    
+            const subjects = [
+                { name: "English", marks: parseFloat(document.getElementById("englishMarks").value) || 0 },
+                { name: "Physics", marks: parseFloat(document.getElementById("physicsMarks").value) || 0 },
+                { name: "Chemistry", marks: parseFloat(document.getElementById("chemistryMarks").value) || 0 },
+                { name: "Maths", marks: parseFloat(document.getElementById("mathsMarks").value) || 0 }
+            ];
+    
+            const subjectDetailsBody = document.getElementById("subjectDetailsBody");
+            subjectDetailsBody.innerHTML = ""; // Clear previous rows
+    
+            let totalMarks = 0;
+            let hasFailed = false;
+    
+            subjects.forEach((subject) => {
+                const status = subject.marks >= 33 ? "Pass" : "Fail";
+                const color = status === "Pass" ? "green" : "red";
+    
+                if (status === "Fail") {
+                    hasFailed = true; // Mark the student as failed overall if any subject is failed
+                }
+    
+                totalMarks += subject.marks;
+    
+                const row = `
+                    <tr>
+                        <td>${subject.name}</td>
+                        <td>${subject.marks}</td>
+                        <td style="color: ${color};">${status}</td>
+                    </tr>
+                `;
+                subjectDetailsBody.innerHTML += row;
+            });
+    
+            const averageMarks = totalMarks / subjects.length;
+            const overallRemarks = hasFailed ? "Fail" : "Pass";
+    
+            const finalResultBody = document.getElementById("finalResultBody");
+            finalResultBody.innerHTML = `
+                <tr>
+                    <td>${name}</td>
+                    <td>${totalMarks.toFixed(2)}</td>
+                    <td>${averageMarks.toFixed(2)}</td>
+                    <td style="color: ${overallRemarks === "Pass" ? "green" : "red"};">${overallRemarks}</td>
+                </tr>
+            `;
+        }
+    </script>
+    
+</body>
 </html>
