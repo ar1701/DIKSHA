@@ -135,6 +135,45 @@ app.get("/team", isLoggedIn, (req,res)=>{
   res.render("team.ejs");
 });
 
+app.get("/testimonial", isLoggedIn, (req,res)=>{
+  res.render("testimonial.ejs");
+});
+
+app.get("/courses", isLoggedIn, (req,res)=>{
+  res.render("courses.ejs");
+});
+
+app.get("/form", isLoggedIn, (req,res)=>{
+  res.render("form.ejs");
+});
+
+app.get("/search", isLoggedIn, (req,res)=>{
+  res.render("search.ejs");
+});
+
+app.get("/syllabus", isLoggedIn, (req,res)=>{
+  res.render("syllabus.ejs");
+});
+
+app.get("/ask", isLoggedIn, (req,res)=>{
+  res.render("ask.ejs");
+});
+
+app.get("/chat", isLoggedIn, (req,res)=>{
+  res.render("chat.ejs");
+});
+
+app.get("/main", (req,res)=>{
+  res.render("main.ejs");
+});
+
+app.get("/login", (req, res) => {
+  res.render("login.ejs");
+});
+app.get("/grading",isLoggedIn, (req, res) => {
+  res.render("grading.ejs");
+});
+
 app.post(
   "/login",
   passport.authenticate("local", {
@@ -184,3 +223,118 @@ app.post("/syllabus", isLoggedIn, async (req, res) => {
   }
 });
 
+
+app.post("/ask", isLoggedIn, async (req, res) => {
+  try {
+      let { question } = req.body;
+      let result = await textQuery(question);
+      res.render("ask2.ejs", { result });
+  } catch (error) {
+      console.error("Error:", error);
+      res.status(500).send("Internal Server Error");
+  }
+});
+
+
+app.post("/chat", isLoggedIn, async (req, res) => {
+  try {
+      const userInput = req.body.message;
+      const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+      const result = await model.generateContent(userInput);
+      const response = await result.response;
+      const text = response.text();
+
+      res.json({ message: text }); // Response sent here
+  } catch (error) {
+      console.error("Error:", error);
+      res.status(500).json({ message: "Internal Server Error" }); // Fallback response
+  }
+});
+
+
+app.post('/form', isLoggedIn, upload.single('image'), async (req, res) => {
+  try {
+      const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+      const prompt = '';
+      const imageParts = [{
+          inlineData: {
+              data: fs.readFileSync(req.file.path).toString('base64'),
+              mimeType: 'image/jpeg'
+          }
+      }];
+
+      const result = await model.generateContent([prompt, ...imageParts]);
+      const response = await result.response;
+      const text = response.text();
+
+      res.json({ result: text }); // Sends JSON response
+  } catch (error) {
+      console.error('Error:', error);
+      res.status(500).json({ error: 'Internal server error' }); // Error response
+  }
+});
+
+
+// Set up a route for logging out
+app.get('/logout', (req, res, next) => {
+  req.logout(function (err) {
+      if (err) {
+          console.error("Error logging out:", err);
+          return next(err); // Forward the error to the error handler
+      }
+      res.redirect('/main'); // Only one response
+  });
+});
+
+
+app.all("*", (req, res) => {
+  res.redirect("/index");
+});
+
+
+const { GoogleGenerativeAI } = require("@google/generative-ai");
+const fs = require("fs");
+
+const dotenv = require("dotenv");
+dotenv.config();
+
+const genAI = new GoogleGenerativeAI(process.env.API_KEY);
+
+function fileToGenerativePart(path, mimeType) {
+  return {
+      inlineData: {
+          data: Buffer.from(fs.readFileSync(path)).toString("base64"),
+          mimeType
+      },
+  };
+}
+
+async function problemSolving() {
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+  const prompt = "";
+  const imageParts = [
+      fileToGenerativePart("prob.jpg", "image/jpeg"),
+  ];
+  const result = await model.generateContent([prompt, ...imageParts]);
+  const response = await result.response;
+  const text = response.text();
+  console.log(text);
+  return text;
+}
+
+async function textQuery(query) {
+  const model = genAI.getGenerativeModel({ model: "gemini-pro"});
+  const result = await model.generateContent(query);
+  const response = await result.response;
+  const text = response.text();
+  return text;
+}
+
+async function syllabusGen(std, sub) {
+  const model = genAI.getGenerativeModel({ model: "gemini-pro"});
+  const prompt = `Generate the Syllabus of ${std} for the subject ${sub} based on current National Educational Policy and always keep in mind the class of a student.Only generate the syllabus according the class age.`;
+  const result = await model.generateContent(prompt);
+  const response = await result.response;
+  const text = response.text();
+  return text;
+}
