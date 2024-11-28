@@ -1,6 +1,12 @@
-
-from llmware.prompts import Prompt
 from llmware.models import ModelCatalog
+from llmware.prompts import Prompt
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+KEY = os.getenv('API_KEY')
+
 
 # models = ModelCatalog().list_all_models()
 
@@ -9,8 +15,7 @@ from llmware.models import ModelCatalog
 
 # exit()
 
-# model = ModelCatalog().load_model("gpt-4o-mini",
-#                                   )
+model = ModelCatalog().load_model("gpt-4o-mini", api_key=KEY)
 
 res = model.stream(
     "What is newton 1st law of motion?")
