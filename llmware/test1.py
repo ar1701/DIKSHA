@@ -1,9 +1,20 @@
 
 from llmware.prompts import Prompt
+from llmware.models import ModelCatalog
 
-prompter = Prompt().load_model("tiny-llama-chat-gguf")
+# models = ModelCatalog().list_all_models()
 
-res = prompter.prompt_main(
-    "What is newton 1st law of motion?",)
-res["llm_response"] = res["llm_response"].split("<|im_end|>")[0]
-print(res["llm_response"])
+# for m in models:
+#     print(m['model_name'])
+
+# exit()
+
+# model = ModelCatalog().load_model("gpt-4o-mini",
+#                                   )
+
+res = model.stream(
+    "What is newton 1st law of motion?")
+for c in res:
+    print(c)
+# res["llm_response"] = res["llm_response"].split("<|im_end|>")[0]
+# print(res)

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 document.addEventListener('DOMContentLoaded', () => {
     const topicInput = document.getElementById('topicInput');
     const generateBtn = document.getElementById('generateBtn');
@@ -11,4 +12,19 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Please enter a study topic');
         }
     });
+=======
+document.addEventListener('DOMContentLoaded', () => {
+    const topicInput = document.getElementById('topicInput');
+    const generateBtn = document.getElementById('generateBtn');
+
+    generateBtn.addEventListener('click', () => {
+        const topic = topicInput.value.trim();
+        if (topic) {
+            // Redirect to results page with topic
+            window.location.href = `results.html?topic=${encodeURIComponent(topic)}`;
+        } else {
+            alert('Please enter a study topic');
+        }
+    });
+>>>>>>> 680960f0 (commit)
 });
