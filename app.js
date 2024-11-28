@@ -242,15 +242,17 @@ app.post("/ask", isLoggedIn, async (req, res) => {
 app.post("/chat", isLoggedIn, async (req, res) => {
   try {
     const userInput = req.body.message;
-    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
-    const result = await model.generateContent(userInput);
-    const response = await result.response;
-    const text = response.text();
 
-    res.json({ message: text }); // Response sent here
+    // Replace Gemini Pro with axios request to your local chat service
+    const response = await axios.post('http://localhost:5000/chat', {
+      prompt: userInput,
+      model: 'llama-2-7b-chat-gguf' // You can change this model as needed
+    });
+
+    res.json({ message: response.data.response });
   } catch (error) {
     console.error("Error:", error);
-    res.status(500).json({ message: "Internal Server Error" }); // Fallback response
+    res.status(500).json({ message: "Internal Server Error" });
   }
 });
 
@@ -265,6 +267,8 @@ app.post('/form', isLoggedIn, upload.single('image'), async (req, res) => {
         mimeType: 'image/jpeg'
       }
     }];
+
+    console.log(req.file.path);
 
     const result = await model.generateContent([prompt, ...imageParts]);
     const response = await result.response;
