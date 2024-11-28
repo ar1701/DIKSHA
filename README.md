@@ -1,2 +1,3 @@
 # Inspi-Ore
-## Transforming Potential into Brilliance
+## Unlocking the Ore of Knowledge
+
