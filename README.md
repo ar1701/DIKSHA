@@ -62,6 +62,18 @@ Stay ahead of the curve! Our **Tech Newsletter** keeps students updated with the
 
 
 ---
+
+### Challenges We Ran Into
+
+1. **Model Size and Documentation**: One of the key challenges we faced was managing the large AI models, such as **LLaMA-2**, which significantly impacted performance and memory usage. Additionally, the complexity of model documentation made the integration process difficult and time-consuming, requiring careful handling and understanding to implement effectively.
+
+2. **Integration and Optimization**: Running large models like **LLaMA-2** on devices with limited computing power and bandwidth posed another challenge. Optimizing these models for performance while maintaining functionality and user experience was crucial. We had to ensure that the platform remained responsive and efficient, even on lower-end devices.
+
+3. **OCR-Based Doubt-Solving Tool**: Developing an accurate OCR system to read and solve problems from scanned or handwritten content was a complex task. Ensuring the OCR tool could handle varying handwriting styles and image quality while providing accurate, real-time solutions was a significant hurdle.
+
+Despite these challenges, we successfully overcame each issue by optimizing models, refining the integration process, and ensuring the accuracy of our tools. This allowed us to deliver a seamless and functional learning experience for underprivileged students.
+
+---
 ## **Access and Reach**
 
 ### **Designed for Accessibility on Mobile Devices**  
