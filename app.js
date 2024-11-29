@@ -1,20 +1,23 @@
-if(process.env.NODE_ENV != "production") {
-  require("dotenv").config(); 
+if (process.env.NODE_ENV != "production") {
+  require("dotenv").config();
 }
 
 const cloudinary = require("cloudinary").v2;
 const express = require("express");
+const { spawn } = require('child_process'); 
 const app = express();
-
+const fs = require("fs");
 const mongoose = require("mongoose");
 const path = require("path");
-const axios = require('axios');
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const User = require("./model/user.js");
 const Profile = require("./model/profile.js");
 
 const session = require("express-session");
+const busboy = require('busboy');
+const axios = require('axios');
+
 const bodyParser = require("body-parser");
 const MongoStore = require("connect-mongo");
 const LocalStrategy = require("passport-local");
@@ -25,39 +28,56 @@ const multer = require("multer");
 
 const dbUrl = process.env.ATLASDB_URL;
 // const { storage } = require("./cloudConfig.js");
+if (dbUrl) {
+  console.log("DB URL is set");
+}
+
+app.locals.AppName = 'Diksha';
 
 async function extractImage(url) {
   try {
-      const response = await axios({
-          method: 'GET',
-          url: url,
-          responseType: 'arraybuffer'
-      });
-      return response.data;
+    const response = await axios({
+      method: 'GET',
+      url: url,
+      responseType: 'arraybuffer'
+    });
+    return response.data;
   } catch (error) {
-      console.error('Error extracting image:', error);
-      throw error;
+    console.error('Error extracting image:', error);
+    throw error;
   }
 }
 
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-      cb(null, 'uploads/');
+    cb(null, 'uploads/');
   },
   filename: function (req, file, cb) {
-      cb(null, file.originalname);
+    cb(null, file.originalname);
+  }
+});
+
+const upload1 = multer({ 
+  dest: 'uploads/',
+  fileFilter: (req, file, cb) => {
+      // Only allow PDF files
+      if (file.mimetype === 'application/pdf') {
+          cb(null, true);
+      } else {
+          cb(new Error('Only PDF files are allowed'), false);
+      }
   }
 });
 
 const upload = multer({ storage });
 
 const store = MongoStore.create({
-  mongoUrl: dbUrl,
+  mongoUrl: 'mongodb+srv://ar898993:v3aRAF8zjnemerug@cluster0.wge4r7r.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
   crypto: {
-      secret: process.env.SECRET,
+    secret: "cjvbxdkbhkdhvjfvjkdfk",
   },
-  touchAfter: 24*60*60,
+  touchAfter: 24 * 60 * 60,
 });
 
 store.on("error", (error) => {
@@ -66,13 +86,13 @@ store.on("error", (error) => {
 
 const sessionOptions = {
   store,
-  secret: process.env.SECRET,
+  secret: "cjvbxdkbhkdhvjfvjkdfk",
   resave: false,
   saveUninitialized: true,
   cookie: {
-      expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-      httpOnly: true,
+    expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+    httpOnly: true,
   },
 };
 
@@ -90,12 +110,12 @@ app.engine("ejs", ejsMate);
 app.use(express.json());
 
 async function main() {
-  await mongoose.connect(dbUrl);
+  await mongoose.connect('mongodb+srv://ar898993:v3aRAF8zjnemerug@cluster0.wge4r7r.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0');
 }
 
 main()
   .then(() => {
-      console.log("Connection Succeeded");
+    console.log("Connection Succeeded");
   })
   .catch((err) => console.log(err));
 
@@ -114,73 +134,112 @@ app.use((req, res, next) => {
 });
 
 let port = 8080;
-app.listen(port, ()=>{
+app.listen(port, () => {
   console.log("listening to the port " + port);
 });
 
 // Routes
-app.get("/index", isLoggedIn, (req,res)=>{
+app.get("/index", isLoggedIn, (req, res) => {
   res.render("index.ejs");
 });
 
-app.get("/about", isLoggedIn, (req,res)=>{
+app.get("/about", isLoggedIn, (req, res) => {
   res.render("about.ejs");
 });
 
-app.get("/contact", isLoggedIn, (req,res)=>{
+app.get("/contact", isLoggedIn, (req, res) => {
   res.render("contact.ejs");
 });
 
-app.get("/team", isLoggedIn, (req,res)=>{
+app.get("/team", isLoggedIn, (req, res) => {
   res.render("team.ejs");
+});
+
+app.get("/testimonial", isLoggedIn, (req, res) => {
+  res.render("testimonial.ejs");
+});
+
+app.get("/courses", isLoggedIn, (req, res) => {
+  res.render("courses.ejs");
+});
+
+app.get("/form", isLoggedIn, (req, res) => {
+  res.render("form.ejs");
+});
+
+app.get("/search", isLoggedIn, (req, res) => {
+  res.render("search.ejs");
+});
+
+app.get("/syllabus", isLoggedIn, (req, res) => {
+  res.render("syllabus.ejs");
+});
+
+app.get("/ask", isLoggedIn, (req, res) => {
+  res.render("ask.ejs");
+});
+
+app.get("/chat", isLoggedIn, (req, res) => {
+  res.render("chat.ejs");
+});
+
+app.get("/main", (req, res) => {
+  res.render("main.ejs");
+});
+
+app.get("/login", (req, res) => {
+  res.render("login.ejs");
+});
+app.get("/grading", isLoggedIn, (req, res) => {
+  res.render("grading.ejs");
 });
 
 app.post(
   "/login",
   passport.authenticate("local", {
-      failureRedirect: "/login",
-      failureFlash: true,
+    failureRedirect: "/login",
+    failureFlash: true,
   }),
   async (req, res) => {
-      let {username} = req.body;
-      req.session.user = {username};
-      req.flash("success", "Welcome to EduFlex!");
-      res.redirect("/user/home");
+    let { username } = req.body;
+    req.session.user = { username };
+    req.flash("success", "Welcome to EduFlex!");
+    res.redirect("/user/home");
   }
 );
 
-app.get("/signup", (req,res)=>{
+app.get("/signup", (req, res) => {
   res.render("signup.ejs");
 });
 
 app.post("/signup", async (req, res) => {
   try {
-      let { username, email, phone, password } = req.body;
-      req.session.user = { username, email, phone };
-      const newUser = new User({ username, email, phone });
+    let { username, email, phone, password } = req.body;
+    req.session.user = { username, email, phone };
+    const newUser = new User({ username, email, phone });
 
-      await User.register(newUser, password);
+    await User.register(newUser, password);
 
-      const newProfile = new Profile({
-          user: newUser._id,
-          gender: "",
-          bio: "",
-      });
-      await newProfile.save();
-      res.redirect("/login");
+    const newProfile = new Profile({
+      user: newUser._id,
+      gender: "",
+      bio: "",
+    });
+    await newProfile.save();
+    res.redirect("/login");
   } catch (e) {
-      res.redirect("/signup");
+    res.redirect("/signup");
   }
 });
 
 app.post("/syllabus", isLoggedIn, async (req, res) => {
   try {
-      let { std, subject } = req.body;
-      let result = await syllabusGen(std, subject);
-      res.render("syl.ejs", { result });
+    let { std, subject } = req.body;
+    let result = await syllabusGen(std, subject);
+    res.render("syl.ejs", { result });
   } catch (error) {
-      console.error("Error:", error);
-      res.status(500).send("Internal Server Error");
+    console.error("Error:", error);
+    res.status(500).send("Internal Server Error");
   }
 });
 
@@ -392,7 +451,7 @@ app.all("*", (req, res) => {
 
 
 
-
+const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 const dotenv = require("dotenv");
 dotenv.config();
@@ -409,11 +468,32 @@ function fileToGenerativePart(path, mimeType) {
 }
 
 
+async function problemSolving() {
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+  const prompt = "";
+  const imageParts = [
+    fileToGenerativePart("prob.jpg", "image/jpeg"),
+  ];
+  const result = await model.generateContent([prompt, ...imageParts]);
+  const response = await result.response;
+  const text = response.text();
+  console.log(text);
+  return text;
+}
 
+async function textQuery(query) {
+  const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+  const result = await model.generateContent(query);
+  const response = await result.response;
+  const text = response.text();
+  return text;
+}
 
-
-
-
-
-
-
+async function syllabusGen(std, sub) {
+  const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+  const prompt = `Generate the Syllabus of ${std} for the subject ${sub} based on current National Educational Policy and always keep in mind the class of a student.Only generate the syllabus according the class age.`;
+  const result = await model.generateContent(prompt);
+  const response = await result.response;
+  const text = response.text();
+  return text;
+}
