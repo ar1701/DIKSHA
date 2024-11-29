@@ -1,7 +1,7 @@
 ## **"Empowering Dreams, Bridging Gaps, Transforming Futures."**
 
 
-![Logo](/img/Diksha_logo.jpeg)
+![Logo](public/img/Diksha_logo.jpeg)
 
 **Diksha** is an innovative platform designed to empower underprivileged students by providing access to high-quality education and personalized learning experiences. Our mission is to bridge the educational gap and offer students a chance to explore, learn, and grow, regardless of their socio-economic background.
 
