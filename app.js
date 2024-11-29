@@ -26,6 +26,8 @@ const multer = require("multer");
 const dbUrl = process.env.ATLASDB_URL;
 // const { storage } = require("./cloudConfig.js");
 
+app.locals.AppName = 'Diksha';
+
 async function extractImage(url) {
   try {
       const response = await axios({
