@@ -6,7 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const topic = topicInput.value.trim();
         if (topic) {
             // Redirect to results page with topic
-            window.location.href = `results.html?topic=${encodeURIComponent(topic)}`;
+            window.location.href = `/results?topic=${encodeURIComponent(topic)}`;
+;
         } else {
             alert('Please enter a study topic');
         }

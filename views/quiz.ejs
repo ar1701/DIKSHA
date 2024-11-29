@@ -12,7 +12,7 @@
 <body>
     <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
         <a href="/index" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
-            <h2 class="m-0 text-primary"><i class="fa fa-book me-3"></i>EduFlex</h2>
+            <h2 class="m-0 text-primary"><i class="fa fa-book me-3"></i><%= AppName%></h2>
         </a>
         <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
@@ -23,6 +23,7 @@
                 <a href="/about" class="nav-item nav-link">About</a>
                 <a href="/grading" class="nav-item nav-link">Grading System</a>
                 <a href="/practice" class="nav-item nav-link">Practice</a>
+                <a href="/analyze-pdf" class="nav-item nav-link">Analyze PDF</a>
                 <a href="/courses" class="nav-item nav-link">AI Services</a>
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
@@ -35,10 +36,10 @@
                 
                 <a href="/contact" class="nav-item nav-link">Contact</a>
             </div>
+            
             <a href="/logout" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Log Out<i class="fa fa-arrow-right ms-3"></i></a>
         </div>
     </nav>
-    
   <div class="container mt-5">
     <h1 class="text-center mb-4"><%= quiz.title %></h1>
     <form id="quizForm">

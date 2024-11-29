@@ -298,7 +298,27 @@ app.get('/analyze-pdf', (req, res) => {
   res.render('pdf.ejs'); // Assumes the EJS file is saved as views/index.ejs
 });
 
-
+app.get("/flashcard", (req, res) => {
+  res.render("flashcard.ejs");
+})
+app.get("/results", (req, res) => {
+  res.render("results.ejs");
+})
+app.get("/newsletter", (req, res) => {
+  res.render("newsletter.ejs");
+})
+app.get("/news", (req, res) => {
+  res.render("news.ejs");
+})
+app.get("/platform", (req, res) => {
+  res.render("platform.ejs");
+})
+app.get("/school", (req, res) => {
+  res.render("school.ejs");
+})
+app.get("/teacher", (req, res) => {
+  res.render("teacher.ejs");
+})
 
 app.post('/form', isLoggedIn, upload.single('image'), async (req, res) => {
   try {
