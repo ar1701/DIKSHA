@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Q&A</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        input[type="file"], textarea {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        #responseContainer {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 15px;
+        }
+        #uploadMessage, #errorMessage {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .error {
+            color: red;
+        }
+        .success {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Document Q&A</h1>
+        
+        <div id="uploadSection">
+            <input type="file" id="fileInput">
+            <button id="uploadButton">Upload Document</button>
+            <div id="uploadMessage"></div>
+        </div>
+
+        <div id="questionSection" style="display: none;">
+            <textarea id="questionInput" rows="4" placeholder="Enter your question about the document"></textarea>
+            <button id="askButton">Ask Question</button>
+            <div id="responseContainer" style="display: none;">
+                <h3>Answer:</h3>
+                <p id="responseText"></p>
+            </div>
+        </div>
+
+        <button id="clearButton" style="display: none; background-color: #f44336;">Clear Document</button>
+    </div>
+
+    <script>
+        // DOM Elements
+        const fileInput = document.getElementById('fileInput');
+        const uploadButton = document.getElementById('uploadButton');
+        const questionSection = document.getElementById('questionSection');
+        const questionInput = document.getElementById('questionInput');
+        const askButton = document.getElementById('askButton');
+        const uploadMessage = document.getElementById('uploadMessage');
+        const responseContainer = document.getElementById('responseContainer');
+        const responseText = document.getElementById('responseText');
+        const clearButton = document.getElementById('clearButton');
+
+        // Backend URL (adjust if different)
+        const BASE_URL = 'http://localhost:5000';
+
+        // Upload Document
+        uploadButton.addEventListener('click', async () => {
+            const file = fileInput.files[0];
+            if (!file) {
+                uploadMessage.innerHTML = '<span class="error">Please select a file</span>';
+                return;
+            }
+
+            // Disable upload button during upload
+            uploadButton.disabled = true;
+            uploadMessage.innerHTML = 'Uploading...';
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            try {
+                const response = await axios.post(`${BASE_URL}/upload`, formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
+
+                uploadMessage.innerHTML = `<span class="success">${response.data.message}</span>`;
+                
+                // Show question section and clear button
+                questionSection.style.display = 'block';
+                clearButton.style.display = 'block';
+            } catch (error) {
+                uploadMessage.innerHTML = `<span class="error">Upload failed: ${error.response?.data?.error || 'Unknown error'}</span>`;
+            } finally {
+                uploadButton.disabled = false;
+            }
+        });
+
+        // Ask Question
+        askButton.addEventListener('click', async () => {
+            const question = questionInput.value.trim();
+            if (!question) {
+                alert('Please enter a question');
+                return;
+            }
+
+            // Disable ask button during processing
+            askButton.disabled = true;
+            responseContainer.style.display = 'none';
+
+            try {
+                const response = await axios.post(`${BASE_URL}/ask`, { question });
+                
+                responseText.textContent = response.data.answer;
+                responseContainer.style.display = 'block';
+            } catch (error) {
+                responseText.textContent = `Error: ${error.response?.data?.error || 'Failed to process question'}`;
+                responseContainer.style.display = 'block';
+            } finally {
+                askButton.disabled = false;
+            }
+        });
+
+        // Clear Document
+        clearButton.addEventListener('click', async () => {
+            try {
+                await axios.post(`${BASE_URL}/clear`);
+                
+                // Reset everything
+                fileInput.value = '';
+                questionInput.value = '';
+                uploadMessage.innerHTML = '';
+                responseContainer.style.display = 'none';
+                questionSection.style.display = 'none';
+                clearButton.style.display = 'none';
+            } catch (error) {
+                console.error('Clear failed', error);
+                alert('Failed to clear document');
+            }
+        });
+    </script>
+</body>
+</html>

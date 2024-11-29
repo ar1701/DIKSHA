@@ -16,10 +16,10 @@ def prompt_with_sources(model_name):
                                    temperature=0.0, sample=False, register_trx=True)
 
     prompter.add_source_document(
-        "./", "test.txt")
+        "./", "Mini Project Abstract@SemVI.pdf")
 
     response = prompter.prompt_with_source(
-        "How old is bob ?", prompt_name="default_with_context")
+        "What is the Roll ?", prompt_name="default_with_context")
     print(response[0]["llm_response"])
 
 
