@@ -450,8 +450,8 @@ app.all("*", (req, res) => {
 });
 
 
-const { GoogleGenerativeAI } = require("@google/generative-ai");
 
+const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 const dotenv = require("dotenv");
 dotenv.config();
@@ -466,6 +466,7 @@ function fileToGenerativePart(path, mimeType) {
     },
   };
 }
+
 
 async function problemSolving() {
   const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
