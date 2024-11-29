@@ -32,6 +32,8 @@ if (dbUrl) {
   console.log("DB URL is set");
 }
 
+app.locals.AppName = 'Diksha';
+
 async function extractImage(url) {
   try {
     const response = await axios({
