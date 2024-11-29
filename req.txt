@@ -1,3 +1,0 @@
-llmware==0.1.8
-torch
-transformers

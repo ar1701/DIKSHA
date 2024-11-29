@@ -3,93 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tech News</title>
+    <title>Latest Tech News</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        .bg-gradient-custom {
-            background: linear-gradient(to right, #4f6d7a, #557a95, #6a9ba3);
+        body {
+            background-color: #1d3a12;
         }
     </style>
 </head>
-<body class="font-sans bg-gradient-custom text-white">
+<body class="font-sans text-white">
 
-    <!-- Hero Section -->
+    <!-- News Section -->
     <section class="py-16 px-6 text-center">
-        <h1 class="text-4xl font-bold mb-4">Latest Tech News</h1>
-        <p class="text-lg mb-6">Here are the latest advancements in the tech world!</p>
+        <h1 class="text-4xl font-bold mb-6">Welcome to the Tech News Page!</h1>
+        <p class="text-lg">Here's the latest in the world of technology:</p>
+
+        <!-- Dynamic email display -->
+        <p id="userEmail" class="text-sm text-gray-300 mt-2"></p>
     </section>
 
-    <!-- Tech News Section -->
-    <section class="bg-white text-gray-800 py-16">
-        <div class="container mx-auto px-6 md:px-12 max-w-4xl">
-            <h2 class="text-2xl font-semibold text-center text-blue-600 mb-4">Trending Tech News</h2>
-
-            <div id="techNews" class="space-y-4">
-                <!-- Tech news will be dynamically populated here -->
-            </div>
+    <!-- News Content -->
+    <section class="bg-white text-gray-800 py-16 rounded-lg mx-auto max-w-5xl shadow-lg">
+        <div class="container px-6 md:px-12">
+            <h2 class="text-2xl font-semibold mb-4" style="color: #0e0d0d;">Latest Updates:</h2>
+            <ul class="space-y-6">
+                <!-- News Item 1 -->
+                <li class="flex items-center gap-3">
+                    <img src="/img/ai.jpeg" alt="News Icon 1" class="w-16 h-26">
+                    <a href="https://solguruz.com/blog/use-cases-of-ai-revolutionizing-industries/" class="text-lg font-medium text-gray-500 hover:text-gray-700">
+                        AI is revolutionizing industries worldwide.
+                    </a>
+                </li>
+                <!-- News Item 2 -->
+                <li class="flex items-center gap-3">
+                    <img src="/img/5g.jpeg" alt="News Icon 2" class="w-16 h-26">
+                    <a href="https://stl.tech/blog/role-of-5g-technology-in-empowering-rural-digital-india/" class="text-lg font-medium text-gray-500 hover:text-gray-700">
+                        5G technology rollout gains momentum in rural areas.
+                    </a>
+                </li>
+                <!-- News Item 3 -->
+                <li class="flex items-center gap-3">
+                    <img src="/img/Supply Chain.jpeg" alt="News Icon 3" class="w-16 h-26">
+                    <a href="https://www.simplilearn.com/top-cybersecurity-trends-article" class="text-lg font-medium text-gray-500 hover:text-gray-700">
+                        Cybersecurity measures are being updated to tackle new challenges.
+                    </a>
+                </li>
+                <!-- News Item 4 -->
+                <li class="flex items-center gap-3">
+                    <img src="/img/Quantum.jpeg" alt="News Icon 4" class="w-16 h-26">
+                    <a href="https://www.mckinsey.com/capabilities/mckinsey-digital/our-insights/tech-at-the-edge-trends-reshaping-the-future-of-it-and-business" class="text-lg font-medium text-gray-500 hover:text-gray-700">
+                        Tech at the edge: Trends reshaping the future of IT and business
+                    </a>
+                </li>
+                <!-- News Item 5 -->
+                <li class="flex items-center gap-3">
+                    <img src="/img/Renewable.jpeg" alt="News Icon 5" class="w-16 h-26">
+                    <a href="https://www.virta.global/global-electric-vehicle-market" class="text-lg font-medium text-gray-500 hover:text-gray-700">
+                        Electric vehicles dominate the auto industry in 2024.
+                    </a>
+                </li>
+            </ul>
         </div>
     </section>
 
-    <footer class="bg-gray-900 py-6 text-center text-white">
+    <footer class="bg-gray-900 py-6 text-center text-white mt-12">
         <p>&copy; 2024 Tech News. All Rights Reserved.</p>
     </footer>
 
     <script>
-        // Sample data for tech news
-        const latestTechNews = [
-            {
-                title: "AI Chatbots Revolutionizing Customer Service",
-                image: "/img/ai.jpeg",
-                link: "https://www.netguru.com/blog/ai-chatbots-improving-customer-service"
-            },
-            {
-                title: "Breakthroughs in Quantum Computing",
-                image: "/img/Quantum.jpeg",
-                link: "https://www.sify.com/technology/the-latest-breakthroughs-in-quantum-computing/"
-            },
-            {
-                title: "Advancements in Renewable Energy Storage",
-                image: "/img/Renewable.jpeg",
-                link: "https://green.org/2024/03/07/unlocking-the-future-the-latest-advances-in-renewable-energy/"
-            },
-            {
-                title: "5G Technology Expanding Connectivity Globally",
-                image: "/img/5g.jpeg",
-                link: "https://krce.ac.in/blog/enhancing-connectivity-through-5g-technology-and-its-impact-on-communication-networks/"
-            },
-            {
-                title: "Blockchain Applications in Supply Chain Management",
-                image: "/img/Supply Chain.jpeg",
-                link: "https://www.turing.com/resources/blockchain-for-supply-chains"
-            }
-        ];
-
-        // Get email parameter from the URL (if passed)
-        const urlParams = new URLSearchParams(window.location.search);
-        const userEmail = urlParams.get('email');
-
-        // Display a greeting message with the user's email
-        const greetingMessage = document.createElement('p');
-        greetingMessage.textContent = `Thank you for subscribing, ${userEmail}!`;
-        greetingMessage.classList.add('text-xl', 'text-center', 'mb-6');
-        document.body.insertBefore(greetingMessage, document.querySelector('.bg-white'));
-
-        // Load tech news dynamically on page load
-        window.onload = function () {
-            const techNewsContainer = document.getElementById('techNews');
-
-            latestTechNews.forEach(news => {
-                const newsItem = `
-                    <div class="flex items-center bg-gray-100 p-4 rounded-lg shadow">
-                        <img src="${news.image}" alt="${news.title}" class="w-16 h-16 rounded-lg mr-4">
-                        <a href="${news.link}" target="_blank" class="text-blue-600 font-medium hover:underline">
-                            ${news.title}
-                        </a>
-                    </div>
-                `;
-                techNewsContainer.innerHTML += newsItem;
-            });
-        };
+        // Retrieve email from query parameter and display it
+        const params = new URLSearchParams(window.location.search);
+        const email = params.get("email");
+        if (email) {
+            document.getElementById("userEmail").innerText = `You subscribed using: ${email}`;
+        }
     </script>
 </body>
 </html>
