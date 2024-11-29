@@ -184,3 +184,236 @@ app.post("/syllabus", isLoggedIn, async (req, res) => {
   }
 });
 
+
+app.post("/ask", isLoggedIn, async (req, res) => {
+  try {
+    let { question } = req.body;
+    let result = await textQuery(question);
+    res.render("ask2.ejs", { result });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+
+app.post("/chat", isLoggedIn, async (req, res) => {
+  try {
+    const userInput = req.body.message;
+
+    // Replace Gemini Pro with axios request to your local chat service
+    const response = await axios.post('http://localhost:5000/chat', {
+      prompt: userInput,
+      model: 'llama-2-7b-chat-gguf' // You can change this model as needed
+    });
+
+    res.json({ message: response.data.response });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+
+// Directory for saving uploaded files
+const UPLOAD_DIR = path.join(__dirname, 'uploads');
+if (!fs.existsSync(UPLOAD_DIR)) {
+    fs.mkdirSync(UPLOAD_DIR);
+}
+
+const uploadDir = path.join(__dirname, 'uploads');
+// const storage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//       if (!fs.existsSync(uploadDir)) {
+//           fs.mkdirSync(uploadDir);
+//       }
+//       cb(null, uploadDir);
+//   },
+//   filename: (req, file, cb) => {
+//       cb(null, file.originalname);
+//   }
+// });
+
+
+app.get('/analyze-pdf', (req, res) => {
+  res.render('pdf.ejs'); // Assumes the EJS file is saved as views/index.ejs
+});
+
+app.get("/flashcard", (req, res) => {
+  res.render("flashcard.ejs");
+})
+app.get("/results", (req, res) => {
+  res.render("results.ejs");
+})
+app.get("/newsletter", (req, res) => {
+  res.render("newsletter.ejs");
+})
+app.get("/news", (req, res) => {
+  res.render("news.ejs");
+})
+app.get("/platform", (req, res) => {
+  res.render("platform.ejs");
+})
+app.get("/school", (req, res) => {
+  res.render("school.ejs");
+})
+app.get("/teacher", (req, res) => {
+  res.render("teacher.ejs");
+})
+
+app.post('/form', isLoggedIn, upload.single('image'), async (req, res) => {
+  try {
+    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    const prompt = '';
+    const imageParts = [{
+      inlineData: {
+        data: fs.readFileSync(req.file.path).toString('base64'),
+        mimeType: 'image/jpeg'
+      }
+    }];
+
+    console.log(req.file.path);
+
+    const result = await model.generateContent([prompt, ...imageParts]);
+    const response = await result.response;
+    const text = response.text();
+
+    res.json({ result: text }); // Sends JSON response
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ error: 'Internal server error' }); // Error response
+  }
+});
+
+
+// Set up a route for logging out
+app.get('/logout', (req, res, next) => {
+  req.logout(function (err) {
+    if (err) {
+      console.error("Error logging out:", err);
+      return next(err); // Forward the error to the error handler
+    }
+    res.redirect('/login'); // Only one response
+  });
+});
+
+
+async function quizGenerator(topic) {
+  const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+  const prompt = `Based on the topic of ${topic} in the context of Engineering, create a multiple-choice quiz with 8 questions. Please format the response only in JSON (no extra things) with the following structure:
+{
+  "title": "MCQ Quiz on ${topic}",
+  "questions": [
+    {
+      "question": "Question text here",
+      "options": ["Option A", "Option B", "Option C", "Option D"],
+      "correctAnswer": "Correct answer text here"
+    },
+    {
+      "question": "Next question text here",
+      "options": ["Option A", "Option B", "Option C", "Option D"],
+      "correctAnswer": "Correct answer text here"
+    }
+    // Repeat for all 10 questions
+  ]
+}
+Make sure that:
+- Strictly Do not include any preamble.
+- Each question has 4 answer options.
+- Provide the correct answer for each question under "correctAnswer".
+`;
+  const result = await model.generateContent(prompt);
+  const response = await result.response;
+  const text = response.text();
+
+  return text;
+}
+
+
+
+app.get("/practice", (req, res) => {
+  res.render("practice.ejs");
+});
+
+app.post("/practice", async (req, res) => {
+  try {
+    const { topic } = req.body;
+    const generatedQuiz = await quizGenerator(topic);
+    // Log the raw generated quiz
+
+    // Attempt to parse the generated quiz string into an object
+    const quiz = JSON.parse(generatedQuiz);
+    req.session.quiz = quiz; // Store the generated quiz in the session
+
+    res.render("quiz.ejs", { quiz }); // Render the quiz page with the generated quiz
+  } catch (err) {
+    console.error("Error generating quiz:", err);
+    res.status(500).send("Error generating quiz. Please try again.");
+  }
+});
+
+app.post("/submit-quiz", (req, res) => {
+
+
+  const userAnswers = req.body.userAnswers;
+  const quiz = req.session.quiz;
+
+  if (!quiz) {
+    console.error("Quiz not found in session");
+    return res.status(400).json({ error: "Quiz not found in session." });
+  }
+
+  let correctCount = 0;
+  const results = quiz.questions.map((question, index) => {
+    const correctAnswer = question.correctAnswer;
+    const userAnswer = userAnswers[`q${index}`];
+    const isCorrect = userAnswer === correctAnswer;
+    if (isCorrect) correctCount++;
+    return {
+      question: question.question,
+      userAnswer,
+      correctAnswer,
+      isCorrect,
+    };
+  });
+
+  res.json({
+    correctCount,
+    totalQuestions: quiz.questions.length,
+    results,
+  });
+});
+
+
+
+app.all("*", (req, res) => {
+  res.redirect("/index");
+});
+
+
+
+
+
+const dotenv = require("dotenv");
+dotenv.config();
+
+const genAI = new GoogleGenerativeAI("AIzaSyBW0RY3HH5UE14SPQ4fcZc7YxoUyBOTcP0");
+
+function fileToGenerativePart(path, mimeType) {
+  return {
+    inlineData: {
+      data: Buffer.from(fs.readFileSync(path)).toString("base64"),
+      mimeType
+    },
+  };
+}
+
+
+
+
+
+
+
+
+
+
