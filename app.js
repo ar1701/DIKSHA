@@ -352,7 +352,7 @@ app.get('/logout', (req, res, next) => {
       console.error("Error logging out:", err);
       return next(err); // Forward the error to the error handler
     }
-    res.redirect('/main'); // Only one response
+    res.redirect('/login'); // Only one response
   });
 });
 

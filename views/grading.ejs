@@ -39,108 +39,169 @@
             background-color: #d5c5f1;
             font-family: Arial, sans-serif;
         }
+        /* Fix navbar visibility */
+        /* Ensure the navbar is fixed on top */
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+/* Optional: Ensure the navbar items are displayed in a row */
+.navbar-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* For proper mobile responsiveness */
+.navbar-toggler {
+    border: 1px solid #ccc;
+}
+
+/* Apply a background color for visibility */
+.navbar-light {
+    background-color: #fff;
+}
+
+/* Optional: Change text color on hover for navbar links */
+.navbar-nav .nav-link:hover {
+    color: #FFBE00;
+}
+
+        nav.navbar {
+            background-color: #fff; /* White background */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Slight shadow for contrast */
+            padding: 10px 20px; /* Added padding for better spacing */
+        }
+
+        nav.navbar .navbar-brand {
+            font-size: 24px;
+            color: #333; /* Dark color for the navbar brand */
+        }
+
+        .navbar-nav a {
+            color: #333 !important; /* Ensure nav links are dark enough */
+            padding: 10px 15px;
+            text-transform: uppercase;
+        }
+
+        .navbar-nav a:hover, .navbar-nav .active {
+            background-color: #FFBE00; /* Highlight on hover and active links */
+            color: white; /* White text on active links */
+        }
+
+        /* Ensure that the dropdown items are visible */
+        .dropdown-menu {
+            background-color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Add a little more margin on top of the content for spacing */
+        h1 {
+            margin-top: 60px;
+            color: #333;
+        }
+
         table {
-    border-collapse: collapse;
-    margin: 20px 0;
-    width: 90%;
-    background-color: white;
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
+            border-collapse: collapse;
+            margin: 20px 0;
+            width: 90%;
+            background-color: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
 
-th, td {
-    padding: 10px;
-    text-align: center;
-    background-color: #f9f9f9; /* Subtle background color for columns */
-}
+        th, td {
+            padding: 10px;
+            text-align: center;
+            background-color: #f9f9f9;
+        }
 
-th {
-    background-color: #f2f2f2;
-    font-weight: bold;
-}
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
 
-td {
-    background-color: white; /* Ensures consistent cell coloring */
-}
+        td {
+            background-color: white;
+        }
 
-tr:nth-child(even) td {
-    background-color: #f9f9f9; /* Alternating row background for better readability */
-}
+        tr:nth-child(even) td {
+            background-color: #f9f9f9;
+        }
 
-tr:hover td {
-    background-color: #FFBE00; /* Highlight row on hover */
-    color: white; /* Change text color for better contrast */
-}
+        tr:hover td {
+            background-color: #FFBE00;
+            color: white;
+        }
 
-caption {
-    margin-bottom: 10px;
-    font-size: 18px;
-    font-weight: bold;
-}
+        caption {
+            margin-bottom: 10px;
+            font-size: 18px;
+            font-weight: bold;
+        }
 
-input[type="text"] {
-    width: 85%;
-    padding: 5px;
-    border-radius: 8px;
-    border: 1px solid #ddd;
-    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
-}
+        input[type="text"] {
+            width: 85%;
+            padding: 5px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
 
-input[type="submit"] {
-    background-color: #FFBE00;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    font-size: 16px;
-    border-radius: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease-in-out;
-}
+        input[type="submit"] {
+            background-color: #FFBE00;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease-in-out;
+        }
 
-input[type="submit"]:hover {
-    background-color: #FFA500;
-    transform: scale(1.05);
-}
+        input[type="submit"]:hover {
+            background-color: #FFA500;
+            transform: scale(1.05);
+        }
 
         
-       
     </style>
 </head>
 <body>
     <!-- Navbar Start -->
-    <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
-        <a href="/index" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
-            <h2 class="m-0 text-primary"><i class="fa fa-book me-3"></i><%= AppName%></h2>
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow sticky-top p-0">
+        <a class="navbar-brand d-flex align-items-center px-4 px-lg-5" href="/index">
+            <h2 class="m-0 text-primary"><i class="fa fa-book me-3"></i><%= AppName %></h2>
         </a>
-        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+        <button class="navbar-toggler me-4" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
-            <div class="navbar-nav ms-auto p-4 p-lg-0">
-                <a href="/index" class="nav-item nav-link active">Home</a>
-                <a href="/about" class="nav-item nav-link">About</a>
-                <a href="/grading" class="nav-item nav-link">Grading System</a>
-                <a href="/practice" class="nav-item nav-link">Practice</a>
-                <a href="/analyze-pdf" class="nav-item nav-link">Analyze PDF</a>
-                <a href="/courses" class="nav-item nav-link">AI Services</a>
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
-                    <div class="dropdown-menu fade-down m-0">
-                        <a href="/team" class="dropdown-item">Our Team</a>
-                        <a href="/testimonial" class="dropdown-item">Testimonial</a>
-                    </div>
-                </div>
-
-                
-                <a href="/contact" class="nav-item nav-link">Contact</a>
-            </div>
-            
-            <a href="/logout" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Log Out<i class="fa fa-arrow-right ms-3"></i></a>
+            <ul class="navbar-nav ms-auto p-4 p-lg-0">
+                <li class="nav-item"><a href="/index" class="nav-link active">Home</a></li>
+                <li class="nav-item"><a href="/about" class="nav-link">About</a></li>
+                <li class="nav-item"><a href="/grading" class="nav-link">Grading System</a></li>
+                <li class="nav-item"><a href="/practice" class="nav-link">Practice</a></li>
+                <li class="nav-item"><a href="/analyze-pdf" class="nav-link">Analyze PDF</a></li>
+                <li class="nav-item"><a href="/courses" class="nav-link">AI Services</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Pages</a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="/team">Our Team</a></li>
+                        <li><a class="dropdown-item" href="/testimonial">Testimonial</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a href="/contact" class="nav-link">Contact</a></li>
+            </ul>
+            <a href="/logout" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Log Out <i class="fa fa-arrow-right ms-3"></i></a>
         </div>
     </nav>
-    <!-- Nav Bar End -->
+    
+
     <h1 >Student Report Card</h1>
     <table>
         <caption>Enter Student Details</caption>
@@ -261,6 +322,10 @@ input[type="submit"]:hover {
             `;
         }
     </script>
-    
+    <!-- Bootstrap JS and Popper.js -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+
+    <!-- Your other content follows... -->
 </body>
 </html>
