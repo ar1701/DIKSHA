@@ -48,7 +48,15 @@ Learning is more fun when it feels like a game! Our **Flashcards Generator** ena
 Stay ahead of the curve! Our **Tech Newsletter** keeps students updated with the latest trends in technology, career opportunities, and industry news. By subscribing for free, students receive curated **insights** directly in their inbox, ensuring they stay informed and **ready for the future**. From breakthrough innovations in AI to new job roles emerging in the tech industry, the newsletter helps students stay **knowledgeable and future-ready**.
 
 ---
+## **Technologies & Tools Used -**
 
+Frontend: CSS, JavaScript, ejs
+Backend: NodeJS, ExpressJS, MongoDB Atlas
+Framework: BootStrap 
+LLMWare: LLaMA-2-7b-Chat-GGUF(Chatbot & Problem solving in Visual Problem Solving), phi3-GGUF(Dynamic Curriculum Generator) & tiny-LLamA-chat-GGUF(Ask Me Anything)
+For OCR, we use Gemini API
+Other Tools: Libraries, Python
+---
 ## **Access and Reach**
 
 ### **Designed for Accessibility on Mobile Devices**  
