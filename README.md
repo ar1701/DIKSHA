@@ -50,12 +50,16 @@ Stay ahead of the curve! Our **Tech Newsletter** keeps students updated with the
 ---
 ## **Technologies & Tools Used -**
 
-Frontend: CSS, JavaScript, ejs
-Backend: NodeJS, ExpressJS, MongoDB Atlas
-Framework: BootStrap 
-LLMWare: LLaMA-2-7b-Chat-GGUF(Chatbot & Problem solving in Visual Problem Solving), phi3-GGUF(Dynamic Curriculum Generator) & tiny-LLamA-chat-GGUF(Ask Me Anything)
-For OCR, we use Gemini API
-Other Tools: Libraries, Python
+- **Frontend**: CSS, JavaScript, ejs  
+- **Backend**: NodeJS, ExpressJS, MongoDB Atlas  
+- **Framework**: Bootstrap  
+- **LLMWare**:  
+  - LLaMA-2-7b-Chat-GGUF (Chatbot & Problem-solving in Visual Problem Solving)  
+  - phi3-GGUF (Dynamic Curriculum Generator)  
+  - tiny-LLamA-chat-GGUF (Ask Me Anything)  
+- **OCR**: Gemini API  
+- **Other Tools**: Libraries, Python  
+
 
 ---
 ## **Access and Reach**
