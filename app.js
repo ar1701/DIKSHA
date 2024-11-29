@@ -4,11 +4,11 @@ if (process.env.NODE_ENV != "production") {
 
 const cloudinary = require("cloudinary").v2;
 const express = require("express");
+const { spawn } = require('child_process'); 
 const app = express();
-
+const fs = require("fs");
 const mongoose = require("mongoose");
 const path = require("path");
-const axios = require('axios');
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const User = require("./model/user.js");
@@ -53,6 +53,18 @@ const storage = multer.diskStorage({
   },
   filename: function (req, file, cb) {
     cb(null, file.originalname);
+  }
+});
+
+const upload1 = multer({ 
+  dest: 'uploads/',
+  fileFilter: (req, file, cb) => {
+      // Only allow PDF files
+      if (file.mimetype === 'application/pdf') {
+          cb(null, true);
+      } else {
+          cb(new Error('Only PDF files are allowed'), false);
+      }
   }
 });
 
@@ -260,6 +272,32 @@ app.post("/chat", isLoggedIn, async (req, res) => {
 });
 
 
+// Directory for saving uploaded files
+const UPLOAD_DIR = path.join(__dirname, 'uploads');
+if (!fs.existsSync(UPLOAD_DIR)) {
+    fs.mkdirSync(UPLOAD_DIR);
+}
+
+const uploadDir = path.join(__dirname, 'uploads');
+// const storage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//       if (!fs.existsSync(uploadDir)) {
+//           fs.mkdirSync(uploadDir);
+//       }
+//       cb(null, uploadDir);
+//   },
+//   filename: (req, file, cb) => {
+//       cb(null, file.originalname);
+//   }
+// });
+
+
+app.get('/analyze-pdf', (req, res) => {
+  res.render('pdf.ejs'); // Assumes the EJS file is saved as views/index.ejs
+});
+
+
+
 app.post('/form', isLoggedIn, upload.single('image'), async (req, res) => {
   try {
     const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
@@ -391,7 +429,7 @@ app.all("*", (req, res) => {
 
 
 const { GoogleGenerativeAI } = require("@google/generative-ai");
-const fs = require("fs");
+
 
 const dotenv = require("dotenv");
 dotenv.config();

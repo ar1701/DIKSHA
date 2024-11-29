@@ -17,6 +17,7 @@
     "airbnb": "file:",
     "axios": "^1.7.8",
     "busboy": "^1.6.0",
+    "child_process": "^1.0.2",
     "cloudinary": "^1.41.3",
     "codecrew_novathon": "file:",
     "connect-flash": "^0.1.1",
