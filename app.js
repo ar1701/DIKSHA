@@ -73,9 +73,9 @@ const upload1 = multer({
 const upload = multer({ storage });
 
 const store = MongoStore.create({
-  mongoUrl: 'mongodb+srv://ar898993:v3aRAF8zjnemerug@cluster0.wge4r7r.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
+  mongoUrl: process.env.ATLASDB_URL,
   crypto: {
-    secret: "cjvbxdkbhkdhvjfvjkdfk",
+    secret: process.env.SECRET,
   },
   touchAfter: 24 * 60 * 60,
 });
@@ -86,7 +86,7 @@ store.on("error", (error) => {
 
 const sessionOptions = {
   store,
-  secret: "cjvbxdkbhkdhvjfvjkdfk",
+  secret: process.env.SECRET,
   resave: false,
   saveUninitialized: true,
   cookie: {
@@ -110,7 +110,7 @@ app.engine("ejs", ejsMate);
 app.use(express.json());
 
 async function main() {
-  await mongoose.connect('mongodb+srv://ar898993:v3aRAF8zjnemerug@cluster0.wge4r7r.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0');
+  await mongoose.connect(process.env.ATLASDB_URL);
 }
 
 main()
@@ -456,7 +456,7 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 const dotenv = require("dotenv");
 dotenv.config();
 
-const genAI = new GoogleGenerativeAI("AIzaSyBW0RY3HH5UE14SPQ4fcZc7YxoUyBOTcP0");
+const genAI = new GoogleGenerativeAI(process.env.API_KEY);
 
 function fileToGenerativePart(path, mimeType) {
   return {
